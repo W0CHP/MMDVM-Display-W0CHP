@@ -86,6 +86,8 @@ protected:
 	virtual void writeInfoInt(unsigned int rxFrequency, unsigned int txFrequency, const std::string& location) override;
 	virtual void writeIPInt(const std::string& name, const std::string& ipV4, const std::string& ipV6) override;
 
+	virtual void writeCommandInt(const std::string& command) override;
+
 	virtual void clockInt(unsigned int ms) override;
 
 private:
@@ -111,10 +113,12 @@ private:
 	CRingBuffer<unsigned char> m_output;
 	CMutex         m_mutex;
 	unsigned char* m_reply;
+	unsigned int   m_replyLength;
 	bool           m_waiting;
 	CTimer         m_waitingTimer;
 
 	void sendCommand(const std::string& command);
+	void processReply(const unsigned char* data, unsigned int length);
 	void sendCommandAction(unsigned int status);
 };
 
